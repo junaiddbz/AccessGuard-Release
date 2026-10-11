@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AccessGuard - User Manual</title>
+    <link rel="icon" type="image/x-icon" href="app.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0c0e13;
+            --panel: #12151c;
+            --panel-2: #181c25;
+            --line: #232836;
+            --line-2: #2f3545;
+            --text: #e7eaf0;
+            --body: #b9c0cd;
+            --muted: #838c9d;
+            --accent: #6b9bff;
+            --accent-soft: rgba(107, 155, 255, .12);
+            --ok: #3fd68a;
+            --warn: #f2b441;
+            --bad: #f56d6d;
+            --sans: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+            --mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Consolas, monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        html {
+            scroll-behavior: smooth
+        }
+
+        body {
+            font-family: var(--sans);
+            background: var(--bg);
+            color: var(--body);
+            line-height: 1.7;
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden
+        }
+
+        code {
+            font-family: var(--mono);
+            font-size: .86em;
+            background: var(--panel-2);
+            border: 1px solid var(--line);
+            padding: 1px 6px;
+            border-radius: 4px;
+            color: var(--text)
+        }
+
+        strong {
+            color: var(--text);
+            font-weight: 600
+        }
+
+        a:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px
+        }
+
+        /* Cover */
+        .cover-page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 48px 24px 32px;
+            border-bottom: 1px solid var(--line);
+            background:
+                linear-gradient(var(--line) 1px, transparent 1px) 0 0/56px 56px,
+                linear-gradient(90deg, var(--line) 1px, transparent 1px) 0 0/56px 56px,
+                var(--bg);
+            position: relative
+        }
+
+        .cover-page::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at 50% 45%, rgba(12, 14, 19, .55) 0, var(--bg) 72%);
+            pointer-events: none
+        }
+
+        .cover-page>* {
+            position: relative
+        }
+
+        .cover-logo {
+            max-width: 200px;
+            margin-bottom: 56px;
+            filter: brightness(0) invert(1)
+        }
+
+        .cover-title {
+            font-size: clamp(3rem, 9vw, 6.5rem);
+            font-weight: 700;
+            letter-spacing: -.045em;
+            line-height: 1;
+            color: #fff;
+            margin-bottom: 20px
+        }
+
+        .cover-subtitle {
+            font-size: 1.25rem;
+            color: var(--accent);
+            font-weight: 500;
+            margin-bottom: 28px
+        }
+
+        .cover-lede {
+            max-width: 520px;
+            color: var(--muted)
+        }
+
+        .cover-footer {
+            margin-top: auto;
+            padding-top: 64px;
+            color: var(--muted);
+            font-size: .85rem
+        }
+
+        /* Layout */
+        .container {
+            display: flex;
+            max-width: 1360px;
+            margin: 0 auto
+        }
+
+        .sidebar {
+            width: 272px;
+            flex: none;
+            padding: 48px 20px 48px 28px;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            border-right: 1px solid var(--line)
+        }
+
+        .sidebar h3 {
+            font-size: .9rem;
+            font-weight: 600;
+            color: var(--text);
+            margin: 0 0 18px 12px
+        }
+
+        .toc-link {
+            display: block;
+            padding: 8px 12px;
+            color: var(--muted);
+            text-decoration: none;
+            border-left: 2px solid transparent;
+            font-size: .92rem;
+            transition: color .15s, border-color .15s, background .15s
+        }
+
+        .toc-link:hover {
+            color: var(--text)
+        }
+
+        .toc-link.active {
+            color: var(--accent);
+            border-left-color: var(--accent);
+            background: var(--accent-soft);
+            font-weight: 500
+        }
+
+        .content {
+            flex: 1;
+            min-width: 0;
+            padding: 64px clamp(24px, 5vw, 72px) 96px
+        }
+
+        .content>* {
+            max-width: 760px
+        }
+
+        .section {
+            margin-bottom: 96px;
+            scroll-margin-top: 40px
+        }
+
+        .section-title {
+            font-size: 2.25rem;
+            font-weight: 700;
+            letter-spacing: -.025em;
+            line-height: 1.15;
+            color: #fff;
+            margin-bottom: 28px
+        }
+
+        .subsection-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text);
+            margin: 48px 0 14px;
+            padding-top: 24px;
+            border-top: 1px solid var(--line)
+        }
+
+        p {
+            margin-bottom: 16px
+        }
+
+        ul,
+        ol {
+            margin: 0 0 20px 22px
+        }
+
+        li {
+            margin-bottom: 8px
+        }
+
+        li::marker {
+            color: var(--muted)
+        }
+
+        /* Callout */
+        .note {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            padding: 24px 26px;
+            margin: 28px 0
+        }
+
+        .note h4 {
+            color: var(--text);
+            font-size: 1.02rem;
+            margin-bottom: 10px
+        }
+
+        .note>p:last-child,
+        .note>ol:last-child {
+            margin-bottom: 0
+        }
+
+        .note.ok {
+            border-left: 3px solid var(--ok)
+        }
+
+        .note.ok h4 {
+            color: var(--ok)
+        }
+
+        /* Tiers */
+        .tiers {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            margin: 24px 0 28px
+        }
+
+        .tier {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-top: 3px solid var(--c);
+            border-radius: 8px;
+            padding: 18px;
+            break-inside: avoid
+        }
+
+        .tier .name {
+            color: var(--c);
+            font-weight: 600;
+            font-size: 1.05rem
+        }
+
+        .tier .rule {
+            font-family: var(--mono);
+            font-size: .78rem;
+            color: var(--muted);
+            margin: 2px 0 12px
+        }
+
+        .tier p {
+            font-size: .92rem;
+            line-height: 1.6;
+            margin: 0
+        }
+
+        .tier.clear {
+            --c: var(--ok)
+        }
+
+        .tier.warning {
+            --c: var(--warn)
+        }
+
+        .tier.locked {
+            --c: var(--bad)
+        }
+
+        .c-ok {
+            color: var(--ok);
+            font-weight: 600
+        }
+
+        .c-warn {
+            color: var(--warn);
+            font-weight: 600
+        }
+
+        .c-bad {
+            color: var(--bad);
+            font-weight: 600
+        }
+
+        /* Timeline */
+        .timeline {
+            list-style: none;
+            margin: 8px 0 0;
+            border-left: 2px solid var(--line-2);
+            padding-left: 0
+        }
+
+        .timeline li {
+            position: relative;
+            padding: 0 0 20px 24px;
+            margin: 0
+        }
+
+        .timeline li:last-child {
+            padding-bottom: 0
+        }
+
+        .timeline li::before {
+            content: "";
+            position: absolute;
+            left: -6px;
+            top: 8px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--bg);
+            border: 2px solid var(--accent)
+        }
+
+        .timeline li.bad::before {
+            border-color: var(--bad)
+        }
+
+        .timeline li.warn::before {
+            border-color: var(--warn)
+        }
+
+        .timeline li.ok::before {
+            border-color: var(--ok)
+        }
+
+        .timeline b {
+            display: block;
+            font-family: var(--mono);
+            font-size: .82rem;
+            color: var(--text);
+            font-weight: 500
+        }
+
+        /* Flow */
+        .flow {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+            margin: 20px 0 28px;
+            font-size: .9rem
+        }
+
+        .flow span {
+            background: var(--panel);
+            border: 1px solid var(--line-2);
+            border-radius: 6px;
+            padding: 7px 12px;
+            color: var(--text)
+        }
+
+        .flow i {
+            color: var(--muted);
+            font-style: normal
+        }
+
+        /* Steps */
+        .steps {
+            list-style: none;
+            counter-reset: s;
+            margin: 14px 0 0
+        }
+
+        .steps li {
+            counter-increment: s;
+            position: relative;
+            padding-left: 44px;
+            margin-bottom: 16px
+        }
+
+        .steps li::before {
+            content: counter(s);
+            position: absolute;
+            left: 0;
+            top: 1px;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--accent-soft);
+            color: var(--accent);
+            font-weight: 600;
+            font-size: .85rem;
+            display: grid;
+            place-items: center
+        }
+
+        /* Definitions (fields) */
+        .defs {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            margin: 20px 0 28px;
+            overflow: hidden
+        }
+
+        .def {
+            padding: 18px 24px;
+            border-bottom: 1px solid var(--line);
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 6px 24px
+        }
+
+        .def:last-child {
+            border-bottom: 0
+        }
+
+        .def dt {
+            color: var(--text);
+            font-weight: 600
+        }
+
+        .def dd {
+            font-size: .95rem
+        }
+
+        .def dd p {
+            font-size: .95rem;
+            margin: 0 0 8px
+        }
+
+        .def dd ul {
+            margin: 8px 0 0 18px
+        }
+
+        .val {
+            display: inline-block;
+            font-family: var(--mono);
+            font-size: .85rem;
+            color: var(--text);
+            background: var(--bg);
+            border: 1px solid var(--line-2);
+            border-radius: 6px;
+            padding: 3px 12px;
+            margin: 0 6px 8px 0
+        }
+
+        .val.ok {
+            color: var(--ok);
+            border-color: rgba(63, 214, 138, .4)
+        }
+
+        .def.danger dt {
+            color: var(--bad)
+        }
+
+        /* Tables */
+        .tbl {
+            overflow-x: auto;
+            margin: 16px 0 28px;
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            background: var(--panel)
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: .94rem
+        }
+
+        th,
+        td {
+            padding: 12px 18px;
+            text-align: left;
+            vertical-align: top;
+            border-bottom: 1px solid var(--line)
+        }
+
+        tr:last-child td {
+            border-bottom: 0
+        }
+
+        th {
+            background: var(--panel-2);
+            color: var(--muted);
+            font-weight: 500;
+            font-size: .82rem;
+            white-space: nowrap
+        }
+
+        td:first-child {
+            width: 28%;
+            color: var(--text)
+        }
+
+        .note .tbl {
+            background: var(--bg)
+        }
+
+        @media(max-width:900px) {
+            .container {
+                display: block
+            }
+
+            .sidebar {
+                position: static;
+                width: auto;
+                height: auto;
+                border-right: 0;
+                border-bottom: 1px solid var(--line);
+                padding: 24px 20px
+            }
+
+            .tiers {
+                grid-template-columns: 1fr
+            }
+
+            .def {
+                grid-template-columns: 1fr
+            }
+
+            .section-title {
+                font-size: 1.8rem
+            }
+        }
+
+        @media(prefers-reduced-motion:reduce) {
+            html {
+                scroll-behavior: auto
+            }
+
+            * {
+                transition: none !important
+            }
+        }
+
+        @media print {
+            @page {
+                margin: 40px 0;
+            }
+
+            body {
+                background: var(--bg) !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact
+            }
+
+            .cover-page {
+                page-break-after: always;
+                min-height: 100vh
+            }
+
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 100vh;
+                width: 25%;
+                overflow: hidden;
+                padding: 30px 12px
+            }
+
+            .container {
+                display: block
+            }
+
+            .content {
+                margin-left: 25%;
+                padding: 32px 32px
+            }
+
+            .note,
+            .defs,
+            .def,
+            .tbl,
+            .tier,
+            .timeline li {
+                break-inside: avoid
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="cover-page">
+        <img src="app.ico" alt="AccessGuard App Icon" style="width: 84px; height: 84px; margin-bottom: 24px;">
+        <h1 class="cover-title">AccessGuard</h1>
+        <div class="cover-subtitle">System User Manual</div>
+        <p class="cover-lede">The complete guide to the Access Control Reconciler, Background Engine, and Terminal Management interface.</p>
+        <div class="cover-footer">
+            <img src="company_logo.png" alt="Resolvent Technologies" style="max-height: 38px; filter: brightness(0) invert(1); margin-bottom: 12px; display: block; margin-left: auto; margin-right: auto;" onerror="this.style.display='none'">
+            &copy; 2026 Resolvent Technologies. All rights reserved.
+        </div>
+    </div>
+
+    <div class="container">
+        <aside class="sidebar">
+            <h3>Contents</h3>
+            <a href="#introduction" class="toc-link">1. Introduction</a>
+            <a href="#backend" class="toc-link">2. Backend &amp; Reconciler Logic</a>
+            <a href="#dashboard" class="toc-link">3. Dashboard Module</a>
+            <a href="#override" class="toc-link">4. Override Module</a>
+            <a href="#config" class="toc-link">5. Configuration Settings</a>
+            <a href="#terminals" class="toc-link">6. Terminals Module</a>
+            <a href="#database" class="toc-link">7. Database Module</a>
+            <a href="#reports" class="toc-link">8. Reports Module</a>
+            <a href="#users" class="toc-link">9. Admin Users Module</a>
+        </aside>
+
+        <main class="content">
+
+            <section id="introduction" class="section">
+                <h2 class="section-title">1. Introduction</h2>
+                <p>Welcome to <strong>AccessGuard</strong>. This software bridges the gap between your physical ZKTeco
+                    hardware terminals and your overarching Human Resources Oracle Database.</p>
+                <p>By constantly monitoring employee attendance and comparing it against designated shifts, AccessGuard
+                    automatically applies and lifts physical terminal lockouts based on tardiness policies, ensuring
+                    total compliance without manual HR intervention.</p>
+            </section>
+
+            <section id="backend" class="section">
+                <h2 class="section-title">2. Backend &amp; Reconciler Logic</h2>
+                <p>The core of AccessGuard is the <strong>Reconciler Engine</strong>, an autonomous background service
+                    that computes employee tardiness and enforces physical door lockouts. It runs automatically on a
+                    scheduled timer, exactly <strong>once per day</strong> (usually configured for late at night).
+                    During this single daily run, it pulls down all the shift schedules and gate logs from your Oracle
+                    database to evaluate employee attendance for that day.</p>
+
+                <h3 class="subsection-title">Configurable Rolling Window</h3>
+                <p>Penalties are calculated on a strictly dynamic <strong>Rolling Penalty Window</strong>. Both the
+                    length of the window (e.g., 30 Days, 60 Days) and the allowed threshold (the <strong>Late
+                        Quota</strong>) are fully customizable via the system's Configuration module. Once an employee
+                    receives a "Late" strike, that strike automatically expires and is erased exactly when the
+                    configured window period ends.</p>
+
+                <h3 class="subsection-title">How Strikes &amp; Tiers Work</h3>
+                <p>The Reconciler compares an employee's first daily punch against their scheduled shift start time. A
+                    <strong>Strike</strong> is recorded if they arrive after their shift's allowed grace period, or if
+                    their first scan of the day is a lunch return (Break-In without a Morning Check-in).
+                </p>
+                <p>Based on their active strike count, employees are placed into one of three Tiers:</p>
+
+                <div class="tiers">
+                    <div class="tier clear">
+                        <div class="name">Clear</div>
+                        <div class="rule">Strikes &lt; Quota</div>
+                        <p>Good standing. Assigned to Hardware Group 1, granting full 24-hour access to the physical
+                            doors.</p>
+                    </div>
+                    <div class="tier warning">
+                        <div class="name">Warning</div>
+                        <div class="rule">Strikes == Quota</div>
+                        <p>On probation. Stays in Hardware Group 1 (doors open normally), but is flagged in yellow on
+                            the HR Dashboard as one strike away from a lockout.</p>
+                    </div>
+                    <div class="tier locked">
+                        <div class="name">Locked Out</div>
+                        <div class="rule">Strikes &gt; Quota</div>
+                        <p>Quota exceeded. Pushed instantly into Hardware Group 3 (a restricted, zero-access Time Zone).
+                            Doors reject their scans at all times until a Pardon is granted or an old strike naturally
+                            expires.</p>
+                    </div>
+                </div>
+
+                <div class="note">
+                    <h4>Behavioral example (30-day window, Late Quota = 2)</h4>
+                    <ol class="timeline">
+                        <li class="ok"><b>Oct 1</b>Employee punches in late. The terminal accepts the punch. That night,
+                            the Reconciler records 1 Strike (Clear Tier).</li>
+                        <li class="warn"><b>Oct 15</b>Employee punches in late. The terminal accepts the punch. That
+                            night, the Reconciler records 2 Strikes (Warning Tier). HR is warned on the dashboard.</li>
+                        <li class="bad"><b>Oct 20</b>Employee punches in late. The terminal accepts the punch. That
+                            night, the Reconciler records a 3rd strike (Locked Out Tier). The system pushes a
+                            zero-access Time Zone to the hardware, locking them out for tomorrow.</li>
+                        <li><b>Oct 21</b>Employee arrives for work but is physically rejected by the terminal. HR grants
+                            a manual <strong>Pardon (Override)</strong>. The Reconciler tags their newest strike,
+                            dropping their active count back to 2 (Warning Tier) and unlocking the doors for today. A
+                            built-in "Pardon Guard" shields them from acquiring any new strikes for the remainder of the
+                            day.</li>
+                        <li class="ok"><b>Oct 31</b>The very first strike from Oct 1 automatically expires! Their active
+                            count drops to 1, returning them to the Clear Tier.</li>
+                    </ol>
+                </div>
+
+                <h3 class="subsection-title">Sequential Catch-up Mechanism</h3>
+                <p>The Reconciler prioritizes perfect data integrity. If the AccessGuard server is turned off or loses
+                    connection over a weekend or holiday, it will <strong>never skip days</strong>. Upon startup, it
+                    utilizes a <code>while</code> loop to detect the last successfully processed date and calculates
+                    every missed day individually, in chronological order, until it is fully caught up with the present
+                    day.</p>
+                <div class="flow" aria-label="Automated recovery flow"><span>Database
+                        Sync</span><i>&rarr;</i><span>Catch-up Missing Days</span><i>&rarr;</i><span>Process
+                        Today</span><i>&rarr;</i><span>Apply Terminal Lockouts</span></div>
+
+                <h3 class="subsection-title">Hardware Signature (HWID) Security</h3>
+                <p>AccessGuard uses an advanced piracy prevention system. A unique signature (HWID) is generated using
+                    the host server's <strong>Motherboard</strong> and <strong>CPU</strong> serials. This ensures your
+                    license cannot be cloned to unauthorized servers. (Note: Upgrading RAM or GPUs will not invalidate
+                    your license, but moving the OS drive to a new Motherboard will require a new activation key).</p>
+            </section>
+
+            <section id="dashboard" class="section">
+                <h2 class="section-title">3. Dashboard Module</h2>
+                <p>The Dashboard is the operational center of AccessGuard, providing a real-time, high-level overview of
+                    your entire workforce. The core of this page is the <strong>Employee Table</strong>, which
+                    accurately reflects every employee's current standing based on the nightly Reconciler calculations.
+                </p>
+
+                <h3 class="subsection-title">The Employee Table</h3>
+                <p>This table tracks exactly how close an employee is to losing their physical access. It features live
+                    search and a toggle to filter out exempt staff.</p>
+                <dl class="defs">
+                    <div class="def">
+                        <dt>Employee ID</dt>
+                        <dd>The unique identifier for the employee, synchronized directly from your Oracle database.
+                        </dd>
+                    </div>
+                    <div class="def">
+                        <dt>Status (Penalty Tier)</dt>
+                        <dd>
+                            <p>Displays the exact tier the employee currently belongs to. This directly determines their
+                                physical hardware access.</p>
+                            <ul>
+                                <li><span class="c-ok">Clear:</span> Employee has fewer strikes than the Late Quota
+                                    limit. Full physical access.</li>
+                                <li><span class="c-warn">Warning:</span> Employee is one strike away from a lockout.
+                                    Full physical access, but HR is alerted.</li>
+                                <li><span class="c-bad">Locked Out:</span> Employee has exceeded the Late Quota.
+                                    Hardware access is completely revoked.</li>
+                            </ul>
+                        </dd>
+                    </div>
+                    <div class="def">
+                        <dt>Lates in Window</dt>
+                        <dd>A counter showing the exact number of active "strikes" an employee currently has against the
+                            limit. Example: <code>3 / 3</code> means they have reached the limit (Warning tier), and a
+                            4th time will trigger a lockout.</dd>
+                    </div>
+                    <div class="def">
+                        <dt>Window Expires</dt>
+                        <dd>Displays a dynamic countdown showing how many days are left until their oldest active strike
+                            naturally "falls off" their record. Example: <code>in 14 days</code>.</dd>
+                    </div>
+                    <div class="def">
+                        <dt>Last Late</dt>
+                        <dd>The precise date of their most recent tardiness infraction.</dd>
+                    </div>
+                    <div class="def">
+                        <dt>Last Pardoned</dt>
+                        <dd>If HR previously pardoned this employee, this displays the date the pardon was granted. This
+                            is crucial for tracking chronic abusers of the Override module.</dd>
+                    </div>
+                </dl>
+
+                <h3 class="subsection-title">Manual Reconciler Trigger</h3>
+                <p>Normally, the Reconciler runs completely automatically at the configured time every single night.
+                    However, if you recently reconnected a broken database or need to instantly calculate strikes midway
+                    through a shift, you can press the <strong>Run Reconciler</strong> button on the top right of the
+                    dashboard. This forces the engine to instantly wake up, pull down the latest hardware punches from
+                    Oracle, and instantly update the status of every employee on this table.</p>
+            </section>
+
+            <section id="override" class="section">
+                <h2 class="section-title">4. Override Module (Pardons)</h2>
+                <p>The Override module allows HR administrators to manually bypass the Reconciler's automated logic and
+                    forgive an employee's tardiness. When an employee is locked out, authorized HR staff can grant a
+                    <strong>Pardon</strong> to immediately restore their physical access.
+                </p>
+
+                <div class="note ok">
+                    <h4>What exactly happens when a Pardon is granted?</h4>
+                    <p>When you click "Pardon" on the Override dashboard and provide a valid reason, the backend
+                        executes the following exact sequence instantly:</p>
+                    <ol class="steps">
+                        <li><strong>Active Strike Reduction:</strong> The system identifies the employee's most recent
+                            "Late" strike and tags it internally as <code>Pardoned</code>. This instantly drops their
+                            active strike count by 1.</li>
+                        <li><strong>Instant Hardware Unlock:</strong> Because their active strike count drops below the
+                            Late Quota, they immediately return to the Warning Tier. The backend instantly pushes an
+                            <strong>Access Group 1</strong> (Full Access) update to the ZKTeco terminals over the
+                            network, unlocking the doors immediately.
+                        </li>
+                        <li><strong>The Pardon Guard:</strong> The employee is granted a digital shield for the
+                            remainder of the current day.</li>
+                        <li><strong>Audit Logging:</strong> The timestamp, HR admin's username, and the text reason are
+                            permanently recorded in the Override Audit Log for accountability.</li>
+                    </ol>
+                </div>
+
+                <h3 class="subsection-title">The "Pardon Guard" (Double-Penalty Protection)</h3>
+                <p>Because the Reconciler Engine runs autonomously every night, there is a risk that it could see the
+                    late punch from the morning and penalize the employee again that night, effectively locking them out
+                    twice for the same infraction.</p>
+                <p>To prevent this, AccessGuard employs a strict <strong>Pardon Guard</strong>. When a pardon is issued,
+                    the system records the exact date. When the Reconciler Engine runs that night, it checks if a pardon
+                    was granted today. If it was, the Reconciler completely skips late-count evaluation for that
+                    employee for that specific day. This guarantees that an employee who was pardoned in the morning can
+                    safely clock in the next day without being unfairly re-locked out.</p>
+            </section>
+
+            <section id="config" class="section">
+                <h2 class="section-title">5. Configuration Settings</h2>
+                <p>This module dictates the strict mathematical rules the Reconciler Engine enforces. Every setting
+                    directly impacts when an employee is penalized. It is divided into three critical sections: Global
+                    Settings, Shift Schedules, and Employee Exceptions.</p>
+
+                <h3 class="subsection-title">1. Global Settings</h3>
+                <p>These settings define the baseline rules for all employees across the organization.</p>
+                <dl class="defs">
+                    <div class="def">
+                        <dt>Default Grace Period (minutes)</dt>
+                        <dd><span class="val">5</span>
+                            <p>The universal buffer added to the official shift start time before an entry is marked as
+                                "Late". This applies to anyone who does not have a custom Shift or Exception override.
+                            </p>
+                        </dd>
+                    </div>
+                    <div class="def">
+                        <dt>Penalty Window (days)</dt>
+                        <dd><span class="val">30</span>
+                            <p>The dynamic timeframe in which late arrivals are tracked before they expire. A strike
+                                recorded today will be wiped exactly X days from today.</p>
+                        </dd>
+                    </div>
+                    <div class="def">
+                        <dt>Late Quota</dt>
+                        <dd><span class="val">1</span>
+                            <p>The exact number of late arrivals allowed within the Penalty Window before a lockout is
+                                triggered. Exceeding this triggers a Lockout.</p>
+                        </dd>
+                    </div>
+                    <div class="def">
+                        <dt>Reconciler Run Time</dt>
+                        <dd><span class="val">01:00 AM</span>
+                            <p>The exact daily schedule the autonomous background service runs to sync Oracle data and
+                                calculate strikes.</p>
+                        </dd>
+                    </div>
+                </dl>
+
+                <h3 class="subsection-title">2. Shift Schedules</h3>
+                <p>AccessGuard automatically discovers unique shifts (e.g., "08:00 to 16:30") directly from your Oracle
+                    database during the nightly sync. HR administrators can click "Edit" on any discovered shift to
+                    customize its specific behavior:</p>
+                <dl class="defs">
+                    <div class="def">
+                        <dt>Grace (min)</dt>
+                        <dd><span class="val">15</span>
+                            <p>A shift-specific grace period that overrides the Global Default. For example, Night
+                                Shifts might allow 15 minutes instead of the global 5.</p>
+                        </dd>
+                    </div>
+                    <div class="def">
+                        <dt>Lunch Start &amp; Lunch End</dt>
+                        <dd><span class="val">12:00</span><span class="val">13:00</span>
+                            <p>Optional time bounds. If configured, the Reconciler expects a "Break-In" punch (returning
+                                from lunch) and will penalize employees who return after the Lunch End time plus the
+                                Grace period. Leave empty for no lunch tracking.</p>
+                        </dd>
+                    </div>
+                </dl>
+
+                <h3 class="subsection-title">3. Employee Exceptions</h3>
+                <p>This section allows you to override the rules on a per-employee basis.</p>
+                <dl class="defs">
+                    <div class="def">
+                        <dt>Custom Grace (min)</dt>
+                        <dd><span class="val">30</span>
+                            <p>An employee-specific grace period. This is the highest priority setting and completely
+                                overrides both the Global Default and their Shift Schedule.</p>
+                        </dd>
+                    </div>
+                    <div class="def">
+                        <dt>Exempt from penalties</dt>
+                        <dd><span class="val ok">&#10003; CHECKED</span>
+                            <p>A master override switch. If checked, the Reconciler will permanently ignore all late
+                                arrivals and missing punches for this specific employee. They will always remain in the
+                                Clear Tier.</p>
+                        </dd>
+                    </div>
+                </dl>
+            </section>
+
+            <section id="terminals" class="section">
+                <h2 class="section-title">6. Terminals Module</h2>
+                <p>This tab manages concurrent IP connections to all your physical ZKTeco hardware terminals via the
+                    <code>TerminalConnectionManager</code>.
+                </p>
+
+                <h3 class="subsection-title">Access Group Pushing</h3>
+                <p>Rather than using generic "Enable" or "Disable" commands, AccessGuard leverages the hardware's native
+                    Access Group architecture. Depending on the employee's penalty tier, the system pushes either
+                    <strong>Group 1</strong> (Clear/Warning - Full Access) or <strong>Group 3</strong> (Locked Out -
+                    Zero Access) over the network.
+                </p>
+
+                <h3 class="subsection-title">Automated Clock Synchronization</h3>
+                <p>A critical feature managed through these connections is automated time alignment. Before every
+                    Reconciler cycle (or whenever a terminal reconnects), the <code>ClockSyncService</code> queries the
+                    terminal's internal clock. If it detects a time drift of more than <strong>60 seconds</strong>
+                    compared to the server's authoritative time, AccessGuard automatically overwrites the hardware
+                    clock. This guarantees absolute precision for calculating grace periods and prevents hardware drift
+                    from unfairly penalizing employees.</p>
+            </section>
+
+            <section id="database" class="section">
+                <h2 class="section-title">7. Database Module</h2>
+                <p>This module houses the connection strings and authentication for your central Oracle HR Database.
+                    AccessGuard relies on a direct connection to your Oracle database to calculate penalties.</p>
+
+                <h3 class="subsection-title">Configuration Fields &amp; Setup Guide</h3>
+                <p>To establish a connection, you must provide the following standard Oracle credentials in the Database
+                    tab. If you are unsure of these values, they can typically be found in your organization's
+                    <code>tnsnames.ora</code> file or by contacting your Database Administrator.</p>
+                <ul>
+                    <li><strong>Host / IP Address:</strong> The network address of your Oracle server. Open Command
+                        Prompt and <code>ping</code> your database hostname to find the IP if necessary.</li>
+                    <li><strong>Port:</strong> The Oracle listener port (the default is almost always
+                        <code>1521</code>).</li>
+                    <li><strong>Service Name / SID:</strong> The specific database identifier (e.g., <code>XE</code> or
+                        <code>ORCL</code>). You can find this in your Oracle SQL Developer connection properties.
+                    </li>
+                    <li><strong>Username &amp; Password:</strong> Credentials for a read-only database user (e.g.,
+                        <code>system</code>).</li>
+                </ul>
+
+                <h3 class="subsection-title">Required Oracle Tables (Schema)</h3>
+                <p>The Reconciler Engine requires two strictly-named tables (or views) to exist in your Oracle database.
+                    If your schema uses different table names, you must create <strong>Database Views</strong> matching
+                    these exact names and column structures so AccessGuard can query them successfully.</p>
+
+                <div class="note">
+                    <h4>1. Shift Schedule Data: <code>MDPL_EMP_SHIFT_V</code></h4>
+                    <p>The system needs a mapping that tells it what time each employee is supposed to arrive. This must
+                        be accessible via a view or table named <code>MDPL_EMP_SHIFT_V</code>.</p>
+                    <div class="tbl">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Required Column Name</th>
+                                    <th>Expected Format / Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>MACHINE_ID</code></td>
+                                    <td>The physical enrollment ID from the ZKTeco device (e.g. "1001"). Used to link
+                                        the person to their schedule.</td>
+                                </tr>
+                                <tr>
+                                    <td><code>EMPLOYEE_NUMBER</code></td>
+                                    <td>The internal HR payroll ID (used for reference in HR audit logs).</td>
+                                </tr>
+                                <tr>
+                                    <td><code>SHIFT_START</code></td>
+                                    <td>Expected format: <code>HH:mm</code> (e.g. "08:00"). Crucial for calculating late
+                                        grace periods.</td>
+                                </tr>
+                                <tr>
+                                    <td><code>SHIFT_END</code></td>
+                                    <td>Expected format: <code>HH:mm</code> (e.g. "16:30").</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="note">
+                    <h4>2. Raw Terminal Punch Data: <code>PP_EMP_ATT_MST_DW</code></h4>
+                    <p>The system requires a continuous stream of the actual scans happening at the physical doors. This
+                        must be accessible via a view or table named <code>PP_EMP_ATT_MST_DW</code>.</p>
+                    <div class="tbl">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Required Column Name</th>
+                                    <th>Expected Format / Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>AM_EMPNO</code></td>
+                                    <td>The physical enrollment ID from the ZKTeco device (matches
+                                        <code>MACHINE_ID</code>).</td>
+                                </tr>
+                                <tr>
+                                    <td><code>AM_TIME</code></td>
+                                    <td><strong>CRITICAL:</strong> Must strictly follow the string format
+                                        <code>YYYY/MM/DD HH24:MI</code> (e.g. "2026/10/08 08:05") so the Reconciler can
+                                        accurately calculate tardiness.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><code>AM_SHIFT</code></td>
+                                    <td>The ZKTeco punch state code. Must be <code>'1'</code> for Morning Check-In and
+                                        <code>'3'</code> for Break-In (Lunch Return).</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <section id="reports" class="section">
+                <h2 class="section-title">8. Reports Module</h2>
+                <p>The reporting engine is designed for HR and auditing staff to track system accountability, manual
+                    overrides, and raw hardware interactions. Every table in this module can be filtered by Date and
+                    exported directly to CSV for external processing or payroll deduction.</p>
+
+                <h3 class="subsection-title">1. Override Audit Log</h3>
+                <p>This table tracks every time an HR administrator manually bypasses the system's lockouts (Pardons).
+                    It is updated instantly the moment an admin clicks "Pardon" on the Override page.</p>
+                <div class="tbl">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Column Name</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Timestamp</td>
+                                <td>The exact date and time the pardon was granted.</td>
+                            </tr>
+                            <tr>
+                                <td>Employee ID</td>
+                                <td>The ZKTeco ID of the employee who was pardoned.</td>
+                            </tr>
+                            <tr>
+                                <td>Late Days</td>
+                                <td>The number of active strikes the employee had at the exact moment they were
+                                    pardoned.</td>
+                            </tr>
+                            <tr>
+                                <td>Approved By</td>
+                                <td>The username of the admin who granted the pardon. Crucial for accountability.</td>
+                            </tr>
+                            <tr>
+                                <td>Reason</td>
+                                <td>The text explanation provided by the admin (e.g., "Car broke down", "Approved by
+                                    Manager").</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 class="subsection-title">2. System Audit Log</h3>
+                <p>This table records critical configuration changes and security events within the AccessGuard
+                    dashboard itself. It is updated automatically by the backend whenever a sensitive action occurs.</p>
+                <div class="tbl">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Column Name</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Timestamp</td>
+                                <td>When the action occurred.</td>
+                            </tr>
+                            <tr>
+                                <td>Action</td>
+                                <td>The category of the event (e.g., "UserLogin", "ConfigUpdate", "PardonGranted").</td>
+                            </tr>
+                            <tr>
+                                <td>Username</td>
+                                <td>The admin account that performed the action.</td>
+                            </tr>
+                            <tr>
+                                <td>Details</td>
+                                <td>Contextual information (e.g., "Updated Late Quota from 3 to 4").</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 class="subsection-title">3. Raw Punch Logs</h3>
+                <p>This table provides a direct window into your central Oracle database. It is not generated by
+                    AccessGuard; rather, it is a live query of the physical hardware scans synced to Oracle.</p>
+                <div class="tbl">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Column Name</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Timestamp</td>
+                                <td>The exact time the employee physically scanned their finger or card.</td>
+                            </tr>
+                            <tr>
+                                <td>Employee ID</td>
+                                <td>The employee's ZKTeco ID.</td>
+                            </tr>
+                            <tr>
+                                <td>Event Type</td>
+                                <td>The punch state code. Shows whether the scan was a "Check-In" (Morning) or a
+                                    "Break-In" (Lunch return).</td>
+                            </tr>
+                            <tr>
+                                <td>Location</td>
+                                <td>The physical terminal location (defaults to Unknown if not mapped in Oracle).</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 class="subsection-title">4. Historical Lates</h3>
+                <p>This table shows the permanent history of an employee's tardiness. Unlike the active "Dashboard"
+                    (which clears strikes when the rolling window expires), this table permanently stores every
+                    infraction.</p>
+                <div class="tbl">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Column Name</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Date</td>
+                                <td>The actual day the employee was late.</td>
+                            </tr>
+                            <tr>
+                                <td>Status</td>
+                                <td>Will display "Counted" (an active, enforced strike). Can also display "Pardoned" if
+                                    the record was overridden via the Override Module.</td>
+                            </tr>
+                            <tr>
+                                <td>Recorded At</td>
+                                <td>The exact timestamp when the Reconciler Engine caught the infraction during its
+                                    nightly run.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="users" class="section">
+                <h2 class="section-title">9. Admin Users Module</h2>
+                <p>AccessGuard uses strict Role-Based Access Control (RBAC) to ensure that only authorized personnel can
+                    make changes to physical security and system configurations. The Admin Users module allows you to
+                    provision, edit, and revoke access to the web dashboard.</p>
+
+                <h3 class="subsection-title">Adding, Editing, &amp; Revoking</h3>
+                <p>You can create new system accounts or edit existing ones. The system enforces a minimum 8-character
+                    password policy for all accounts. When an employee leaves the HR or IT department, you can instantly
+                    revoke their access by deleting their account from the Registered Users table.</p>
+
+                <h3 class="subsection-title">Granular Permissions</h3>
+                <p>Instead of relying on blanket administrator roles, AccessGuard allows you to configure exact
+                    privileges for each account. The available permissions are:</p>
+                <dl class="defs">
+                    <div class="def danger">
+                        <dt>Administrator</dt>
+                        <dd>Grants unrestricted access to all modules and system settings. Overrides all other toggles.
+                        </dd>
+                    </div>
+                    <div class="def">
+                        <dt>Can Override Penalties</dt>
+                        <dd>Allows HR staff to grant Pardons/Overrides and instantly unlock doors, without giving them
+                            the ability to change system rules.</dd>
+                    </div>
+                    <div class="def">
+                        <dt>Can Edit Config</dt>
+                        <dd>Allows the user to change the core Reconciler rules (e.g., Late Quota, Rolling Window
+                            length, and Grace Periods).</dd>
+                    </div>
+                    <div class="def">
+                        <dt>Can Manage Terminals</dt>
+                        <dd>Allows the user to enroll new ZKTeco hardware IPs or remove offline devices.</dd>
+                    </div>
+                    <div class="def">
+                        <dt>Can Manage Database</dt>
+                        <dd>Restricts access to the Oracle connection strings and credentials to authorized IT staff
+                            only.</dd>
+                    </div>
+                    <div class="def">
+                        <dt>Can View Reports</dt>
+                        <dd>A read-only permission allowing payroll or auditing staff to export historical lockout and
+                            attendance data to CSV.</dd>
+                    </div>
+                </dl>
+                <p>Only users who authenticate with these specific permissions can interact with the protected backend
+                    API endpoints.</p>
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        const sections = document.querySelectorAll('.section'), navLinks = document.querySelectorAll('.toc-link');
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href').slice(1) === e.target.id));
+                }
+            });
+        }, { rootMargin: '-20% 0px -60% 0px', threshold: 0 });
+        sections.forEach(s => observer.observe(s));
+    </script>
+</body>
+
+</html>
