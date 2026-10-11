@@ -15,8 +15,8 @@
 
 <br/>
 
-<a href="./docs/AccessGuard_User_Manual.html">
-  <img src="https://img.shields.io/badge/📖%20LAUNCH-INTERACTIVE%20USER%20MANUAL%20(HTML)-2563EB?style=for-the-badge&logoColor=white" height="38" alt="Launch Interactive User Manual HTML" />
+<a href="https://release-iwbr0fq6o-junaiddbzs-projects.vercel.app/" target="_blank">
+  <img src="https://img.shields.io/badge/📖%20LAUNCH-LIVE%20USER%20MANUAL-2563EB?style=for-the-badge&logoColor=white" height="38" alt="Launch Live User Manual" />
 </a>
 
 <br/><br/>

@@ -308,4 +308,4 @@ Copy-Item -Path $dbPath -Destination "$backupDir\reconciler_$timestamp.db" -Forc
 
 ---
 
-*For detailed UI walkthroughs, refer to the [AccessGuard User Manual (HTML)](AccessGuard_User_Manual.html) and [AccessGuard User Manual (PDF)](AccessGuard_User_Manual.pdf).*
+*For detailed UI walkthroughs, refer to the [Live AccessGuard User Manual](https://release-iwbr0fq6o-junaiddbzs-projects.vercel.app/).*
