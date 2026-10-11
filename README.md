@@ -24,7 +24,11 @@
 <p align="center">
   <b>Developed & Engineered by</b><br/>
   <a href="#-about-the-developer">
-    <img src="docs/company_logo.png" alt="Resolvent Technologies" width="220" style="filter: brightness(0) invert(1); margin-top: 8px;" />
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="docs/company_logo_white.png">
+      <source media="(prefers-color-scheme: light)" srcset="docs/company_logo_dark.png">
+      <img alt="Resolvent Technologies" src="docs/company_logo_white.png" width="230" />
+    </picture>
   </a><br/>
   <i>Delivering high-reliability enterprise software, infrastructure, and digital engineering solutions.</i>
 </p>
@@ -373,7 +377,11 @@ To restore on a new machine: install AccessGuard via the setup wizard, stop the 
 ## 🏢 About the Developer
 
 <div align="center">
-  <img src="docs/company_logo.png" alt="Resolvent Technologies" width="260" style="filter: brightness(0) invert(1);" />
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/company_logo_white.png">
+    <source media="(prefers-color-scheme: light)" srcset="docs/company_logo_dark.png">
+    <img alt="Resolvent Technologies" src="docs/company_logo_white.png" width="260" />
+  </picture>
   <br/><br/>
   <h3>Resolvent Technologies</h3>
   <p><b>Enterprise Software • Industrial Automation • IT Infrastructure • Digital Transformation</b></p>
